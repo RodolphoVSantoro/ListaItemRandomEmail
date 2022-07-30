@@ -114,6 +114,7 @@ function insert(){
 	_lastId+=1;
 }
 
+//executa quando a página carregar
 window.onload = function main(){
 	_lastId = 0;
 	//vetor com todos os itens
