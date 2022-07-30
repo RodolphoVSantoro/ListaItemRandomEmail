@@ -8,12 +8,10 @@ var _itens;
 var _listaDOM;
 
 function hide(element){
-	//element.style.display = "none";
 	element.setAttribute("style", "display:none");
 }
 
 function show(element){
-	//element.style.display = "";
 	element.setAttribute("style", "display:block");
 }
 
@@ -29,9 +27,9 @@ function itemIndexOf(myArray, searchId) {
 class ItemCompra{
 	constructor(id) {
 		this.id = id;
-    	this.mode = GUIMode.EDIT;
-    	//div com tudo de cada item
-    	this.divDOM = document.createElement("div");
+    		this.mode = GUIMode.EDIT;
+    		//div com tudo de cada item
+    		this.divDOM = document.createElement("div");
 		
 		//textField para nome do produto
 		this.itemTFieldDOM = document.createElement("input");
@@ -53,18 +51,24 @@ class ItemCompra{
 		  .then(data => {
 		  	this.userDOM.appendChild(document.createTextNode(data.results[0].email));
 		  });
-
+		
+		//botões de cada item
+		
+		//confirm chama método de mesmo nome com o próprio objeto
+		//fiz isso com todos porque não é possível usar this quando o listener chama
 		this.botaoConfirm = document.createElement("button");
 		this.botaoConfirm.addEventListener("click", () => {this.confirm(this)});
 		this.botaoConfirm.appendChild(document.createTextNode("confirm"));
 		this.divDOM.appendChild(this.botaoConfirm);
 
+		//edit parecido com criação do confirm
 		this.botaoEdit = document.createElement("button");
 		hide(this.botaoEdit);
 		this.botaoEdit.addEventListener("click", () => {this.edit(this)});
 		this.botaoEdit.appendChild(document.createTextNode("edit"));
 		this.divDOM.appendChild(this.botaoEdit);
 		
+		//e mesmo para delete
 		this.botaoDelete =  document.createElement("button");
 		this.botaoDelete.addEventListener("click", () => {this.destroy(this)});
 		this.botaoDelete.appendChild(document.createTextNode("delete"));
@@ -72,6 +76,7 @@ class ItemCompra{
 
 		_listaDOM.appendChild(this.divDOM);
 	}
+	//confirma edição
 	confirm(obj){
 		obj.mode = GUIMode.VIEW;
 		hide(obj.itemTFieldDOM);
@@ -81,6 +86,7 @@ class ItemCompra{
 		//pega texto do tField e coloca no paragrafo
 		obj.itemDOM.textContent = obj.itemTFieldDOM.value;
 	}
+	//entra no modo de edição
 	edit(obj){
 		obj.mode = GUIMode.EDIT;
 		hide(obj.itemDOM);
@@ -88,6 +94,7 @@ class ItemCompra{
 		show(obj.itemTFieldDOM);
 		show(obj.botaoConfirm);
 	}
+	//deleta do os elementos do DOM e remove objeto do array
 	destroy(obj){
 		obj.itemTFieldDOM.remove();
 		obj.itemDOM.remove();
@@ -101,6 +108,7 @@ class ItemCompra{
 	}
 }
 
+//cria novo item
 function insert(){
 	_itens.push(new ItemCompra(_lastId));
 	_lastId+=1;
@@ -108,9 +116,12 @@ function insert(){
 
 window.onload = function main(){
 	_lastId = 0;
+	//vetor com todos os itens
 	_itens = [];
+	//onde no DOM guardo cada item
 	_listaDOM = document.getElementById("listaCompra");
-
+	
+	//associando insert ao botão "new" criado no html
 	var botaoNew = document.getElementById("insert");
 	botaoNew.addEventListener("click", insert);
 }
